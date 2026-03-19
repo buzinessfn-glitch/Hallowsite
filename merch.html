@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merch — Hallow Esports</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="loader">
+  <img src="hallow_logo.jpg" alt="Hallow" class="loader-logo" onerror="this.style.display='none'">
+  <div class="loader-word"><span>M</span><span>E</span><span>R</span><span>C</span><span>H</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+  <div class="loader-sub">Hallow Esports</div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.background='#111';this.style.borderRadius='50%'">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Teams <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <ul class="dropdown">
+          <li><a href="roster.html">Our Roster</a></li>
+          <li><a href="leaders.html">Our Leaders</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="socials.html">Socials</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="roster.html">Our Roster</a><a href="leaders.html">Our Leaders</a>
+  <a href="news.html">News</a><a href="merch.html">Merch</a>
+  <a href="socials.html">Socials</a><a href="about.html#contact">Contact</a>
+</div>
+
+<div class="page">
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label" style="justify-content:center">Official Store</div>
+      <h1 class="section-title" style="text-align:center;margin-top:10px">Hallow <span class="dim">Merch</span></h1>
+      <p class="hero-desc" style="text-align:center;margin:16px auto 0;max-width:480px;color:var(--text-dim)">Represent the team. Every item ships via Payhip — click any product to go straight to the store.</p>
+    </div>
+  </section>
+
+  <!-- MERCH GRID -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="merch-grid" id="merch-grid">
+        <!-- Placeholder while loading -->
+        <div class="empty-state" style="grid-column:1/-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+          </svg>
+          <p>Loading products…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYHIP NOTE -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="glass-panel reveal" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:28px 32px">
+        <div style="flex:1;min-width:200px">
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-dim);margin-bottom:6px">Payments via Payhip</div>
+          <div style="font-size:.9rem;color:var(--text-muted)">All orders are securely processed through Payhip. Click any product to view and purchase directly on the store page.</div>
+        </div>
+        <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="white-space:nowrap">
+          Questions? Contact us →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.display='none'"></div>
+        <div class="footer-brand-name">HALLOW</div>
+        <div class="footer-brand-desc">Elite competitive esports. Black &amp; White. No compromise.</div>
+        <div class="footer-socials">
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="footer-social-btn">𝕏</a>
+          <a href="https://www.tiktok.com/@hallow.hq" target="_blank" rel="noopener" class="footer-social-btn">🎵</a>
+          <a href="https://www.youtube.com/@Hallow-HQ" target="_blank" rel="noopener" class="footer-social-btn">▶</a>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="footer-social-btn">💬</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="leaders.html">Leadership</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Content</h4>
+        <ul>
+          <li><a href="news.html">News</a></li>
+          <li><a href="merch.html">Merch</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Hallow Esports. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<div id="watermark" title="Double-click for admin">
+  <img src="hallow_logo.jpg" alt="H" onerror="this.outerHTML='<span style=&quot;font-family:monospace;font-size:14px;color:rgba(255,255,255,0.4)&quot;>H</span>'">
+</div>
+
+<div id="admin-overlay">
+  <div id="admin-pw-modal">
+    <h2>ADMIN ACCESS</h2>
+    <p>Enter the admin password to continue.</p>
+    <div id="admin-pw-error"></div>
+    <input type="password" id="admin-pw-input" placeholder="••••••••••" autocomplete="off">
+    <button class="btn btn-white" style="width:100%;justify-content:center" onclick="checkAdminPw()">Unlock</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+
+<div id="admin-panel">
+  <div class="admin-bar">
+    <span class="admin-bar-title">⚙ Hallow Admin — Merch</span>
+    <button class="btn btn-ghost btn-sm" onclick="closeAdmin()">Close ✕</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <button class="admin-tab" onclick="location.href='index.html'">Home</button>
+      <button class="admin-tab active" data-tab="merch">Merch</button>
+      <button class="admin-tab" onclick="location.href='news.html'">News</button>
+      <button class="admin-tab" onclick="location.href='socials.html'">Socials</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section active" id="admin-merch">
+        <div class="admin-section-title">Manage Merch Products</div>
+        <div class="admin-hint">Image filename: <code>merch_itemname.jpg</code> — place in root folder. Payhip link should be the full product URL.</div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Product Name *</label><input class="admin-input" id="m-name" placeholder="e.g. Hallow Hoodie"></div>
+          <div class="admin-field"><label>Price (€)</label><input class="admin-input" id="m-price" type="number" step="0.01" placeholder="0.00"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Image Filename</label><input class="admin-input" id="m-img" placeholder="merch_hoodie.jpg"></div>
+          <div class="admin-field"><label>Payhip Link</label><input class="admin-input" id="m-link" placeholder="https://payhip.com/..."></div>
+        </div>
+        <div class="admin-form-row full">
+          <div class="admin-field"><label>Description</label><textarea class="admin-textarea" style="min-height:80px" id="m-desc" placeholder="Short product description…"></textarea></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Order #</label><input class="admin-input" id="m-order" type="number" value="0"></div>
+          <div class="admin-field" style="justify-content:flex-end">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:auto">
+              <input type="checkbox" id="m-active" checked style="accent-color:#fff;width:16px;height:16px"> Active
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-white btn-sm" onclick="saveMerch()">Save Product</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearMerchForm()">Clear</button>
+        </div>
+        <div class="admin-divider"></div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="admin-merch-list"><tr><td colspan="4" style="text-align:center;color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4/dist/anime.min.js"></script>
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data, error } = await db.from('merch_items')
+    .select('*').eq('active', true).order('order_num');
+
+  const grid = document.getElementById('merch-grid');
+
+  if (error || !data?.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <h3>Store Coming Soon</h3>
+        <p>Products will appear here shortly. Follow us for updates.</p>
+        <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="margin-top:12px">Follow @TeamHallowHQ</a>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = data.map(item => `
+    <div class="merch-card">
+      <div class="merch-card-img">
+        ${item.image_filename
+          ? `<img src="${item.image_filename}" alt="${item.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=merch-img-fallback><svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1&quot;><path d=&quot;M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0&quot;/></svg></div>'">`
+          : `<div class="merch-img-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg></div>`}
+        ${item.payhip_link ? `<div class="merch-card-overlay"><span>View on Payhip →</span></div>` : ''}
+      </div>
+      <div class="merch-card-body">
+        <div class="merch-card-name">${item.name}</div>
+        ${item.description ? `<div class="merch-card-desc">${item.description}</div>` : ''}
+        <div class="merch-card-footer">
+          <div class="merch-card-price">${item.price ? `€${parseFloat(item.price).toFixed(2)}` : 'Price TBC'}</div>
+          ${item.payhip_link
+            ? `<a href="${item.payhip_link}" target="_blank" rel="noopener" class="btn btn-white btn-sm">Buy Now</a>`
+            : `<span class="btn btn-ghost btn-sm" style="opacity:.4;pointer-events:none">Coming Soon</span>`}
+        </div>
+      </div>
+    </div>`).join('');
+
+  initCardReveals('.merch-card');
+});
+</script>
+</body>
+</html>

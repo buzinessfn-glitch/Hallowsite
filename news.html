@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News — Hallow Esports</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="loader">
+  <img src="hallow_logo.jpg" alt="Hallow" class="loader-logo" onerror="this.style.display='none'">
+  <div class="loader-word"><span>N</span><span>E</span><span>W</span><span>S</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+  <div class="loader-sub">Hallow Esports</div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.background='#111';this.style.borderRadius='50%'">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Teams <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <ul class="dropdown">
+          <li><a href="roster.html">Our Roster</a></li>
+          <li><a href="leaders.html">Our Leaders</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="socials.html">Socials</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="roster.html">Our Roster</a><a href="leaders.html">Our Leaders</a>
+  <a href="news.html">News</a><a href="merch.html">Merch</a>
+  <a href="socials.html">Socials</a><a href="about.html#contact">Contact</a>
+</div>
+
+<div class="page">
+
+  <!-- NEWS FEED VIEW -->
+  <div id="news-feed">
+    <section class="page-hero">
+      <div class="page-hero-bg"></div>
+      <div class="container">
+        <div class="section-label" style="justify-content:center">Latest</div>
+        <h1 class="section-title" style="text-align:center;margin-top:10px">News &amp; <span class="dim">Updates</span></h1>
+        <p class="hero-desc" style="text-align:center;margin:16px auto 0;max-width:480px;color:var(--text-dim)">Match results, team announcements, and everything happening inside Hallow.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="news-grid" id="news-grid">
+          <div class="empty-state" style="grid-column:1/-1"><p>Loading posts…</p></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SINGLE POST VIEW -->
+  <div id="news-post-view" style="display:none">
+    <section class="section">
+      <div class="container">
+        <a href="news.html" class="btn btn-ghost btn-sm" style="margin-bottom:32px;display:inline-flex">
+          ← Back to News
+        </a>
+        <div class="news-post" id="news-post-content"></div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.display='none'"></div>
+        <div class="footer-brand-name">HALLOW</div>
+        <div class="footer-brand-desc">Elite competitive esports.</div>
+        <div class="footer-socials">
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="footer-social-btn">𝕏</a>
+          <a href="https://www.tiktok.com/@hallow.hq" target="_blank" rel="noopener" class="footer-social-btn">🎵</a>
+          <a href="https://www.youtube.com/@Hallow-HQ" target="_blank" rel="noopener" class="footer-social-btn">▶</a>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="footer-social-btn">💬</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Hallow Esports.</span></div>
+  </div>
+</footer>
+
+<div id="watermark"><img src="hallow_logo.jpg" alt="H" onerror="this.outerHTML='<span style=&quot;font-family:monospace;font-size:14px;color:rgba(255,255,255,0.4)&quot;>H</span>'"></div>
+
+<div id="admin-overlay">
+  <div id="admin-pw-modal">
+    <h2>ADMIN ACCESS</h2><p>Enter the admin password.</p>
+    <div id="admin-pw-error"></div>
+    <input type="password" id="admin-pw-input" placeholder="••••••••••" autocomplete="off">
+    <button class="btn btn-white" style="width:100%;justify-content:center" onclick="checkAdminPw()">Unlock</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+<div id="admin-panel">
+  <div class="admin-bar">
+    <span class="admin-bar-title">⚙ Hallow Admin — News</span>
+    <button class="btn btn-ghost btn-sm" onclick="closeAdmin()">Close ✕</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <button class="admin-tab active" data-tab="news">News</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section active" id="admin-news">
+        <div class="admin-section-title">Manage News Posts</div>
+        <div class="admin-hint">
+          Formatting: <code>**bold**</code> <code>*italic*</code> <code># Heading</code> <code>## Sub</code>
+          <code>&gt; quote</code> <code>`code`</code> <code>~~strike~~</code><br>
+          Links: <code>[text](url)</code> — Internal: <code>[[roster|See Roster]]</code>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Title *</label><input class="admin-input" id="n-title" placeholder="Post title"></div>
+          <div class="admin-field"><label>Author</label><input class="admin-input" id="n-author" placeholder="Name"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Cover Image (URL or filename)</label><input class="admin-input" id="n-image"></div>
+          <div class="admin-field"><label>Tags (comma separated)</label><input class="admin-input" id="n-tags" placeholder="valorant, win…"></div>
+        </div>
+        <div class="admin-form-row full">
+          <div class="admin-field"><label>Content</label><textarea class="admin-textarea" id="n-content" style="min-height:240px"></textarea></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.8rem;color:var(--text-dim)">
+            <input type="checkbox" id="n-published" checked style="accent-color:#fff"> Published
+          </label>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-white btn-sm" onclick="saveNews()">Save Post</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearNewsForm()">Clear</button>
+        </div>
+        <div class="admin-divider"></div>
+        <table class="admin-table">
+          <thead><tr><th>Title</th><th>Author</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="admin-news-list"><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4/dist/anime.min.js"></script>
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const params = new URLSearchParams(location.search);
+  const postId = params.get('id');
+
+  if (postId) {
+    // Single post view
+    document.getElementById('news-feed').style.display = 'none';
+    document.getElementById('news-post-view').style.display = 'block';
+    await loadSinglePost(postId);
+  } else {
+    // Feed view
+    await loadNewsFeed();
+  }
+});
+
+async function loadSinglePost(id) {
+  const { data, error } = await db.from('news_posts').select('*').eq('id', id).single();
+  const container = document.getElementById('news-post-content');
+
+  if (error || !data) {
+    container.innerHTML = '<div class="empty-state"><h3>Post not found.</h3><p>This post may have been removed.</p></div>';
+    return;
+  }
+
+  document.title = `${data.title} — Hallow Esports`;
+
+  const tagsHtml = (data.tags || []).map(t =>
+    `<span style="background:var(--surface-2);border:1px solid var(--border);border-radius:100px;padding:3px 10px;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em">${t}</span>`
+  ).join('');
+
+  container.innerHTML = `
+    <div class="news-post-header reveal">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em">
+        <span>${data.author || 'Hallow'}</span>
+        <span>·</span>
+        <span>${new Date(data.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</span>
+      </div>
+      <h1 class="news-post-title">${data.title}</h1>
+      ${tagsHtml ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">${tagsHtml}</div>` : ''}
+    </div>
+    ${data.image_url ? `<div class="news-post-img reveal"><img src="${data.image_url}" alt="${data.title}" loading="lazy"></div>` : ''}
+    <div class="news-content reveal">
+      <p class="news-p">${parseContent(data.content)}</p>
+    </div>
+    <div class="divider" style="margin:40px 0"></div>
+    <div class="reveal" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+      <span style="font-size:.8rem;color:var(--text-dim)">Share this post:</span>
+      <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(data.title)}&url=${encodeURIComponent(location.href)}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">𝕏 Share on X</a>
+    </div>`;
+}
+
+async function loadNewsFeed() {
+  const { data, error } = await db.from('news_posts')
+    .select('*').eq('published', true)
+    .order('created_at', { ascending: false });
+
+  const grid = document.getElementById('news-grid');
+  if (error || !data?.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v12a2 2 0 01-2 2z"/></svg><h3>No posts yet</h3><p>Check back soon for news and updates.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = data.map(n => `
+    <div class="news-card">
+      ${n.image_url
+        ? `<div class="news-card-img"><img src="${n.image_url}" alt="${n.title}" loading="lazy"></div>`
+        : `<div class="news-card-no-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`}
+      <div class="news-card-body">
+        <div class="news-card-meta">
+          <span>${n.author || 'Hallow'}</span>
+          <span>·</span>
+          <span>${new Date(n.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
+          ${(n.tags||[]).length ? `<span>·</span><span>${n.tags[0]}</span>` : ''}
+        </div>
+        <div class="news-card-title">${n.title}</div>
+        <div class="news-card-excerpt">${stripContent(n.content)}</div>
+        <div class="news-card-footer">
+          <a href="news.html?id=${n.id}" class="btn btn-ghost btn-sm">Read More →</a>
+        </div>
+      </div>
+    </div>`).join('');
+
+  initCardReveals('.news-card');
+}
+</script>
+</body>
+</html>

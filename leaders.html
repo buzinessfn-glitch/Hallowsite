@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Leaders — Hallow Esports</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="loader">
+  <img src="hallow_logo.jpg" alt="Hallow" class="loader-logo" onerror="this.style.display='none'">
+  <div class="loader-word"><span>L</span><span>E</span><span>A</span><span>D</span><span>E</span><span>R</span><span>S</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+  <div class="loader-sub">Hallow Esports</div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.background='#111';this.style.borderRadius='50%'">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Teams <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <ul class="dropdown">
+          <li><a href="roster.html">Our Roster</a></li>
+          <li><a href="leaders.html">Our Leaders</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="socials.html">Socials</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="roster.html">Our Roster</a><a href="leaders.html">Our Leaders</a>
+  <a href="news.html">News</a><a href="merch.html">Merch</a>
+  <a href="socials.html">Socials</a><a href="about.html#contact">Contact</a>
+</div>
+
+<div class="page">
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label" style="justify-content:center">The Team Behind The Team</div>
+      <h1 class="section-title" style="text-align:center;margin-top:10px">Our <span class="dim">Leaders</span></h1>
+      <p class="hero-desc" style="text-align:center;margin:16px auto 0;max-width:500px;color:var(--text-dim)">The people building Hallow from the ground up — management, coaching, and operations.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="leaders-grid" id="leaders-grid">
+        <div class="empty-state" style="grid-column:1/-1"><p>Loading…</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.display='none'"></div>
+        <div class="footer-brand-name">HALLOW</div>
+        <div class="footer-brand-desc">Elite competitive esports. Black &amp; White.</div>
+        <div class="footer-socials">
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="footer-social-btn">𝕏</a>
+          <a href="https://www.tiktok.com/@hallow.hq" target="_blank" rel="noopener" class="footer-social-btn">🎵</a>
+          <a href="https://www.youtube.com/@Hallow-HQ" target="_blank" rel="noopener" class="footer-social-btn">▶</a>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="footer-social-btn">💬</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="leaders.html">Leadership</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Hallow Esports. All rights reserved.</span></div>
+  </div>
+</footer>
+
+<div id="watermark"><img src="hallow_logo.jpg" alt="H" onerror="this.outerHTML='<span style=&quot;font-family:monospace;font-size:14px;color:rgba(255,255,255,0.4)&quot;>H</span>'"></div>
+
+<div id="admin-overlay">
+  <div id="admin-pw-modal">
+    <h2>ADMIN ACCESS</h2><p>Enter the admin password.</p>
+    <div id="admin-pw-error"></div>
+    <input type="password" id="admin-pw-input" placeholder="••••••••••" autocomplete="off">
+    <button class="btn btn-white" style="width:100%;justify-content:center" onclick="checkAdminPw()">Unlock</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+<div id="admin-panel">
+  <div class="admin-bar">
+    <span class="admin-bar-title">⚙ Hallow Admin — Leaders</span>
+    <button class="btn btn-ghost btn-sm" onclick="closeAdmin()">Close ✕</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <button class="admin-tab" data-tab="roster" onclick="location.href='roster.html'">Roster</button>
+      <button class="admin-tab active" data-tab="leaders">Leaders</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section active" id="admin-leaders">
+        <div class="admin-section-title">Manage Leaders</div>
+        <div class="admin-hint">PFP filename: <code>leader_Name_pfp.jpg</code></div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Name *</label><input class="admin-input" id="l-name" placeholder="Full Name"></div>
+          <div class="admin-field"><label>Role</label><input class="admin-input" id="l-role" placeholder="CEO, Manager…"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>PFP Filename</label><input class="admin-input" id="l-pfp" placeholder="leader_Name_pfp.jpg"></div>
+          <div class="admin-field"><label>Order #</label><input class="admin-input" id="l-order" type="number" value="0"></div>
+        </div>
+        <div class="admin-form-row full"><div class="admin-field"><label>Bio</label><textarea class="admin-textarea" id="l-bio"></textarea></div></div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Twitter/X</label><input class="admin-input" id="l-twitter"></div>
+          <div class="admin-field"><label>Discord</label><input class="admin-input" id="l-discord"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Instagram</label><input class="admin-input" id="l-instagram"></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-white btn-sm" onclick="saveLeader()">Save</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearLeaderForm()">Clear</button>
+        </div>
+        <div class="admin-divider"></div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Role</th><th>Actions</th></tr></thead>
+          <tbody id="admin-leaders-list"><tr><td colspan="3" style="text-align:center;color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4/dist/anime.min.js"></script>
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data, error } = await db.from('leaders').select('*').order('order_num');
+  const grid = document.getElementById('leaders-grid');
+
+  if (error || !data?.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M2 21v-2a8 8 0 0116 0v2"/></svg><h3>Leadership Coming Soon</h3><p>Check back shortly.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = data.map(l => `
+    <div class="leader-card">
+      <div class="leader-pfp">
+        <img src="leader_${l.name.replace(/\s+/g,'')}_pfp.jpg" alt="${l.name}"
+             onerror="this.src='';this.parentElement.style.background='#1a1a1a';this.remove()">
+      </div>
+      <div class="leader-info">
+        <div class="leader-name">${l.name}</div>
+        <div class="leader-role">${l.role || 'Staff'}</div>
+        ${l.bio ? `<div class="leader-bio">${l.bio}</div>` : ''}
+        <div class="leader-socials">${socialLinks(l)}</div>
+      </div>
+    </div>`).join('');
+
+  initCardReveals('.leader-card');
+});
+</script>
+</body>
+</html>

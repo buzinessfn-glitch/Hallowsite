@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Hallow Esports</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="loader">
+  <img src="hallow_logo.jpg" alt="Hallow" class="loader-logo" onerror="this.style.display='none'">
+  <div class="loader-word"><span>A</span><span>B</span><span>O</span><span>U</span><span>T</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+  <div class="loader-sub">Hallow Esports</div>
+</div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.background='#111';this.style.borderRadius='50%'">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Teams <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <ul class="dropdown">
+          <li><a href="roster.html">Our Roster</a></li>
+          <li><a href="leaders.html">Our Leaders</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="socials.html">Socials</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="roster.html">Our Roster</a><a href="leaders.html">Our Leaders</a>
+  <a href="news.html">News</a><a href="merch.html">Merch</a>
+  <a href="socials.html">Socials</a><a href="about.html#contact">Contact</a>
+</div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label" style="justify-content:center">Our Story</div>
+      <h1 class="section-title" style="text-align:center;margin-top:10px">About <span class="dim">Hallow</span></h1>
+      <p class="hero-desc" style="text-align:center;margin:16px auto 0;max-width:520px;color:var(--text-dim)">Founded in 2026. Built on discipline, competition, and the relentless pursuit of victory.</p>
+    </div>
+  </section>
+
+  <!-- ABOUT CONTENT -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="about-split reveal">
+        <div class="about-text">
+          <div class="section-label">Who We Are</div>
+          <h2 class="section-title" style="margin-top:14px">Black &amp; <span class="dim">White.</span><br>No Compromise.</h2>
+          <p style="color:var(--text-muted);line-height:1.8;margin-top:20px;font-size:.95rem">
+            Hallow is a competitive esports organisation built from scratch in 2026. We don't
+            believe in middle ground — you're either committed or you're not. Our teams compete
+            across Valorant, Fortnite, Rainbow Six Siege, and CS2 with a singular goal: winning.
+          </p>
+          <p style="color:var(--text-muted);line-height:1.8;margin-top:16px;font-size:.95rem">
+            Every player under the Hallow banner represents more than just a team. They represent
+            a standard — of preparation, mental fortitude, and teamwork that doesn't break under
+            pressure. We invest in our athletes so they can invest in results.
+          </p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:28px">
+            <a href="roster.html" class="btn btn-white">Meet the Roster</a>
+            <a href="leaders.html" class="btn btn-ghost">Our Leadership</a>
+          </div>
+        </div>
+        <div class="about-logo-wrap">
+          <div class="about-logo-bg"></div>
+          <img src="hallow_logo.jpg" alt="Hallow" class="about-logo" onerror="this.parentElement.innerHTML='<div class=about-logo-placeholder>HALLOW</div>'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS ROW -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="stats-row">
+        <div class="stat-card reveal" data-delay="0">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Games Competed</div>
+        </div>
+        <div class="stat-card reveal" data-delay="80">
+          <div class="stat-num">2026</div>
+          <div class="stat-label">Founded</div>
+        </div>
+        <div class="stat-card reveal" data-delay="160">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Drive to Win</div>
+        </div>
+        <div class="stat-card reveal" data-delay="240">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Compromises Made</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES SECTION -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-label">Our Titles</div>
+        <h2 class="section-title">Games We <span class="dim">Compete In</span></h2>
+      </div>
+      <div class="games-row" style="margin-top:32px">
+        <div class="game-card">
+          <img src="valorantlogo.jpg" alt="Valorant" onerror="this.parentElement.innerHTML+='<span style=&quot;font-size:2rem&quot;>🎮</span>';this.remove()">
+          <div class="game-card-name">Valorant</div>
+        </div>
+        <div class="game-card">
+          <img src="fortnitelogo.jpg" alt="Fortnite" onerror="this.parentElement.innerHTML+='<span style=&quot;font-size:2rem&quot;>⚡</span>';this.remove()">
+          <div class="game-card-name">Fortnite</div>
+        </div>
+        <div class="game-card">
+          <img src="rs6logo.jpg" alt="Rainbow Six Siege" onerror="this.parentElement.innerHTML+='<span style=&quot;font-size:2rem&quot;>🛡️</span>';this.remove()">
+          <div class="game-card-name">Rainbow Six Siege</div>
+        </div>
+        <div class="game-card">
+          <img src="cs2logo.jpg" alt="CS2" onerror="this.parentElement.innerHTML+='<span style=&quot;font-size:2rem&quot;>💥</span>';this.remove()">
+          <div class="game-card-name">CS2</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PLACEMENTS ═══ -->
+  <section class="section" id="placements" style="padding-top:0">
+    <div class="container">
+      <div class="section-head-row reveal">
+        <div>
+          <div class="section-label">Track Record</div>
+          <h2 class="section-title">Tournament <span class="dim">Placements</span></h2>
+        </div>
+        <div id="placement-filter-wrap" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="filter-tab active" style="padding:6px 14px;font-size:.7rem" data-pf="all">All</button>
+          <button class="filter-tab" style="padding:6px 14px;font-size:.7rem" data-pf="valorant">Valorant</button>
+          <button class="filter-tab" style="padding:6px 14px;font-size:.7rem" data-pf="fortnite">Fortnite</button>
+          <button class="filter-tab" style="padding:6px 14px;font-size:.7rem" data-pf="rs6">RS6</button>
+          <button class="filter-tab" style="padding:6px 14px;font-size:.7rem" data-pf="cs2">CS2</button>
+        </div>
+      </div>
+      <div class="placements-list" id="placements-list">
+        <div class="empty-state" style="padding:40px 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <p>Loading placements…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-label">What We Stand For</div>
+        <h2 class="section-title">Our <span class="dim">Values</span></h2>
+      </div>
+      <div class="values-grid">
+        <div class="value-card reveal" data-delay="0">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="value-title">Discipline</div>
+          <div class="value-desc">Every hour of practice, every review session, every early night — it compounds. We don't cut corners.</div>
+        </div>
+        <div class="value-card reveal" data-delay="90">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="value-title">Consistency</div>
+          <div class="value-desc">Peaks don't matter. The floor does. We build teams that perform when the pressure is highest.</div>
+        </div>
+        <div class="value-card reveal" data-delay="180">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div class="value-title">Team First</div>
+          <div class="value-desc">Individual accolades are hollow without collective success. Hallow wins — and loses — together.</div>
+        </div>
+        <div class="value-card reveal" data-delay="270">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="value-title">Excellence</div>
+          <div class="value-desc">We don't celebrate participation. We celebrate results. Good enough has never been our standard.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section class="section" id="contact" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-label">Get in Touch</div>
+        <h2 class="section-title">Contact <span class="dim">Hallow</span></h2>
+      </div>
+      <div class="contact-grid">
+
+        <div class="contact-card reveal" data-delay="0">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="contact-card-platform">Email</div>
+          <div class="contact-card-handle">HallowHQ2026@gmail.com</div>
+          <div class="contact-card-desc">For partnerships, sponsorships, press enquiries, or anything else — drop us a line.</div>
+          <a href="mailto:HallowHQ2026@gmail.com" class="btn btn-ghost btn-sm" style="margin-top:20px">Send Email →</a>
+        </div>
+
+        <div class="contact-card reveal" data-delay="90">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <div class="contact-card-platform">Discord</div>
+          <div class="contact-card-handle">discord.gg/hallowesport</div>
+          <div class="contact-card-desc">The fastest way to reach the team and community. Join the server and ping us directly.</div>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="margin-top:20px">Join Server →</a>
+        </div>
+
+        <div class="contact-card reveal" data-delay="180">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+            </svg>
+          </div>
+          <div class="contact-card-platform">X / Twitter</div>
+          <div class="contact-card-handle">@TeamHallowHQ</div>
+          <div class="contact-card-desc">Send us a DM or mention us — we're active and usually respond within 24 hours.</div>
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="margin-top:20px">Open X →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.display='none'"></div>
+        <div class="footer-brand-name">HALLOW</div>
+        <div class="footer-brand-desc">Elite competitive esports. Black &amp; White. No compromise.</div>
+        <div class="footer-socials">
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="footer-social-btn">𝕏</a>
+          <a href="https://www.tiktok.com/@hallow.hq" target="_blank" rel="noopener" class="footer-social-btn">🎵</a>
+          <a href="https://www.youtube.com/@Hallow-HQ" target="_blank" rel="noopener" class="footer-social-btn">▶</a>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="footer-social-btn">💬</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="leaders.html">Leadership</a></li>
+          <li><a href="about.html#placements">Placements</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Content</h4>
+        <ul>
+          <li><a href="news.html">News</a></li>
+          <li><a href="merch.html">Merch</a></li>
+          <li><a href="socials.html">Socials</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:HallowHQ2026@gmail.com">HallowHQ2026@gmail.com</a></li>
+          <li><a href="https://discord.gg/hallowesport" target="_blank" rel="noopener">Discord Server</a></li>
+          <li><a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener">@TeamHallowHQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Hallow Esports. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="socials.html">Socials</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="watermark" title="Double-click for admin">
+  <img src="hallow_logo.jpg" alt="H" onerror="this.outerHTML='<span style=&quot;font-family:monospace;font-size:14px;color:rgba(255,255,255,0.4)&quot;>H</span>'">
+</div>
+
+<div id="admin-overlay">
+  <div id="admin-pw-modal">
+    <h2>ADMIN ACCESS</h2>
+    <p>Enter the admin password to continue.</p>
+    <div id="admin-pw-error"></div>
+    <input type="password" id="admin-pw-input" placeholder="••••••••••" autocomplete="off">
+    <button class="btn btn-white" style="width:100%;justify-content:center" onclick="checkAdminPw()">Unlock</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+
+<div id="admin-panel">
+  <div class="admin-bar">
+    <span class="admin-bar-title">⚙ Hallow Admin — Placements</span>
+    <button class="btn btn-ghost btn-sm" onclick="closeAdmin()">Close ✕</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <button class="admin-tab active" data-tab="placements">Placements</button>
+      <button class="admin-tab" onclick="location.href='roster.html'">Roster</button>
+      <button class="admin-tab" onclick="location.href='news.html'">News</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section active" id="admin-placements">
+        <div class="admin-section-title">Manage Tournament Placements</div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Game</label>
+            <select class="admin-select" id="pl-game">
+              <option value="">— All Games —</option>
+              <option value="valorant">Valorant</option>
+              <option value="fortnite">Fortnite</option>
+              <option value="rs6">Rainbow Six Siege</option>
+              <option value="cs2">CS2</option>
+            </select>
+          </div>
+          <div class="admin-field"><label>Tournament Name *</label><input class="admin-input" id="pl-tournament" placeholder="e.g. VCT Challengers Open"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Placement (text)</label><input class="admin-input" id="pl-placement" placeholder="e.g. 1st Place, Top 4"></div>
+          <div class="admin-field"><label>Placement # (1=gold, 2=silver, 3=bronze)</label><input class="admin-input" id="pl-num" type="number" placeholder="1"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Date</label><input class="admin-input" id="pl-date" type="date"></div>
+          <div class="admin-field"><label>Prize / Earnings</label><input class="admin-input" id="pl-prize" placeholder="e.g. €1,000"></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-white btn-sm" onclick="savePlacement()">Save Placement</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearPlacementForm()">Clear</button>
+        </div>
+        <div class="admin-divider"></div>
+        <table class="admin-table">
+          <thead><tr><th>Tournament</th><th>Game</th><th>Placement</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="admin-placements-list"><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4/dist/anime.min.js"></script>
+<script src="script.js"></script>
+<script>
+const GAME_NAMES_LOCAL = { valorant: 'Valorant', fortnite: 'Fortnite', rs6: 'Rainbow Six Siege', cs2: 'CS2' };
+let allPlacements = [];
+
+function placColor(num) {
+  if (num === 1) return 'gold';
+  if (num === 2) return 'silver';
+  if (num === 3) return 'bronze';
+  return '';
+}
+
+function renderPlacements(list) {
+  const el = document.getElementById('placements-list');
+  if (!list.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:40px 0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><p>No placements yet — results will appear here after tournaments.</p></div>';
+    return;
+  }
+  el.innerHTML = list.map(p => `
+    <div class="placement-row">
+      <div class="placement-num ${placColor(p.placement_num)}">${p.placement || '—'}</div>
+      <div class="placement-info">
+        <div class="placement-tournament">${p.tournament}</div>
+        <div class="placement-game">${p.game ? (GAME_NAMES_LOCAL[p.game] || p.game) : ''}</div>
+      </div>
+      ${p.prize ? `<div class="placement-prize">${p.prize}</div>` : ''}
+      <div class="placement-date">${p.date ? new Date(p.date).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : ''}</div>
+    </div>`).join('');
+  initCardReveals('.placement-row');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // Anchor scroll offset (for #placements and #contact via nav)
+  if (location.hash) {
+    setTimeout(() => {
+      const target = document.querySelector(location.hash);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 800);
+  }
+
+  // Placement filters
+  document.querySelectorAll('[data-pf]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-pf]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const game = btn.dataset.pf;
+      renderPlacements(game === 'all' ? allPlacements : allPlacements.filter(p => p.game === game));
+    });
+  });
+
+  // Load placements
+  const { data, error } = await db.from('placements')
+    .select('*').order('date', { ascending: false });
+
+  if (error || !data) {
+    document.getElementById('placements-list').innerHTML = '<div class="empty-state"><p>Could not load placements.</p></div>';
+    return;
+  }
+  allPlacements = data;
+  renderPlacements(allPlacements);
+
+  initCardReveals('.game-card');
+  initCardReveals('.value-card');
+  initCardReveals('.stat-card');
+  initCardReveals('.contact-card');
+});
+</script>
+</body>
+</html>

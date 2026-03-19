@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Roster — Hallow Esports</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <img src="hallow_logo.jpg" alt="Hallow" class="loader-logo" onerror="this.style.display='none'">
+  <div class="loader-word"><span>R</span><span>O</span><span>S</span><span>T</span><span>E</span><span>R</span></div>
+  <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
+  <div class="loader-sub">Hallow Esports</div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.background='#111';this.style.borderRadius='50%'">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Teams <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+        <ul class="dropdown">
+          <li><a href="roster.html">Our Roster</a></li>
+          <li><a href="leaders.html">Our Leaders</a></li>
+        </ul>
+      </li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="socials.html">Socials</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+    <button class="nav-burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="roster.html">Our Roster</a><a href="leaders.html">Our Leaders</a>
+  <a href="news.html">News</a><a href="merch.html">Merch</a>
+  <a href="socials.html">Socials</a><a href="about.html#contact">Contact</a>
+</div>
+
+<div class="page">
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="container">
+      <div class="section-label" style="justify-content:center">The Players</div>
+      <h1 class="section-title" style="text-align:center;margin-top:10px">Our <span class="dim">Roster</span></h1>
+      <p class="hero-desc" style="text-align:center;margin:16px auto 0;max-width:500px;color:var(--text-dim)">The athletes behind Hallow. Competing across Valorant, Fortnite, Rainbow Six Siege, and CS2.</p>
+    </div>
+  </section>
+
+  <!-- FILTER TABS -->
+  <section style="padding-bottom:0">
+    <div class="container">
+      <div class="filter-tabs" id="filter-tabs">
+        <button class="filter-tab active" data-game="all">All Teams</button>
+        <button class="filter-tab" data-game="valorant">
+          <img src="valorantlogo.jpg" alt="" onerror="this.remove()">Valorant
+        </button>
+        <button class="filter-tab" data-game="fortnite">
+          <img src="fortnitelogo.jpg" alt="" onerror="this.remove()">Fortnite
+        </button>
+        <button class="filter-tab" data-game="rs6">
+          <img src="rs6logo.jpg" alt="" onerror="this.remove()">RS6
+        </button>
+        <button class="filter-tab" data-game="cs2">
+          <img src="cs2logo.jpg" alt="" onerror="this.remove()">CS2
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROSTER GRID -->
+  <section class="section" style="padding-top:28px">
+    <div class="container">
+      <div class="roster-grid" id="roster-grid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <p>Loading roster…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="hallow_logo.jpg" alt="Hallow" onerror="this.style.display='none'"></div>
+        <div class="footer-brand-name">HALLOW</div>
+        <div class="footer-brand-desc">Elite competitive esports. Black &amp; White.</div>
+        <div class="footer-socials">
+          <a href="https://x.com/TeamHallowHQ" target="_blank" rel="noopener" class="footer-social-btn">𝕏</a>
+          <a href="https://www.tiktok.com/@hallow.hq" target="_blank" rel="noopener" class="footer-social-btn">🎵</a>
+          <a href="https://www.youtube.com/@Hallow-HQ" target="_blank" rel="noopener" class="footer-social-btn">▶</a>
+          <a href="https://discord.gg/hallowesport" target="_blank" rel="noopener" class="footer-social-btn">💬</a>
+        </div>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Organisation</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="roster.html">Roster</a></li>
+          <li><a href="leaders.html">Leadership</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-col">
+        <h4>Content</h4>
+        <ul>
+          <li><a href="news.html">News</a></li>
+          <li><a href="merch.html">Merch</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Hallow Esports. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- WATERMARK -->
+<div id="watermark"><img src="hallow_logo.jpg" alt="H" onerror="this.outerHTML='<span style=&quot;font-family:monospace;font-size:14px;color:rgba(255,255,255,0.4)&quot;>H</span>'"></div>
+
+<!-- ADMIN OVERLAY (shared) -->
+<div id="admin-overlay">
+  <div id="admin-pw-modal">
+    <h2>ADMIN ACCESS</h2>
+    <p>Enter the admin password to continue.</p>
+    <div id="admin-pw-error"></div>
+    <input type="password" id="admin-pw-input" placeholder="••••••••••" autocomplete="off">
+    <button class="btn btn-white" style="width:100%;justify-content:center" onclick="checkAdminPw()">Unlock</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px" onclick="closeAdmin()">Cancel</button>
+  </div>
+</div>
+<div id="admin-panel">
+  <div class="admin-bar">
+    <span class="admin-bar-title">⚙ Hallow Admin — Roster</span>
+    <button class="btn btn-ghost btn-sm" onclick="closeAdmin()">Close ✕</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <button class="admin-tab active" data-tab="roster">Roster</button>
+      <button class="admin-tab" data-tab="leaders" onclick="location.href='leaders.html'">Leaders</button>
+      <button class="admin-tab" data-tab="news" onclick="location.href='news.html'">News</button>
+      <button class="admin-tab" data-tab="merch" onclick="location.href='merch.html'">Merch</button>
+      <button class="admin-tab" data-tab="socials" onclick="location.href='socials.html'">Socials</button>
+    </div>
+    <div class="admin-content">
+      <div class="admin-section active" id="admin-roster">
+        <div class="admin-section-title">Manage Roster</div>
+        <div class="admin-hint">PFP filename: <code>roster_PlayerName_pfp.jpg</code> — place in root folder.</div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Name *</label><input class="admin-input" id="r-name" placeholder="IGN"></div>
+          <div class="admin-field"><label>Position</label><input class="admin-input" id="r-position" placeholder="IGL, Entry…"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Game</label>
+            <select class="admin-select" id="r-game">
+              <option value="">—</option>
+              <option value="valorant">Valorant</option>
+              <option value="fortnite">Fortnite</option>
+              <option value="rs6">Rainbow Six Siege</option>
+              <option value="cs2">CS2</option>
+            </select>
+          </div>
+          <div class="admin-field"><label>PFP Filename</label><input class="admin-input" id="r-pfp" placeholder="roster_Name_pfp.jpg"></div>
+        </div>
+        <div class="admin-form-row full"><div class="admin-field"><label>Bio</label><textarea class="admin-textarea" id="r-bio"></textarea></div></div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Twitter/X</label><input class="admin-input" id="r-twitter"></div>
+          <div class="admin-field"><label>Twitch</label><input class="admin-input" id="r-twitch"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Instagram</label><input class="admin-input" id="r-instagram"></div>
+          <div class="admin-field"><label>TikTok</label><input class="admin-input" id="r-tiktok"></div>
+        </div>
+        <div class="admin-form-row">
+          <div class="admin-field"><label>Order #</label><input class="admin-input" id="r-order" type="number" value="0"></div>
+          <div class="admin-field" style="justify-content:flex-end"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:auto"><input type="checkbox" id="r-active" checked style="accent-color:#fff"> Active</label></div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-white btn-sm" onclick="saveRoster()">Save</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearRosterForm()">Clear</button>
+        </div>
+        <div class="admin-divider"></div>
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Position</th><th>Game</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="admin-roster-list"><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4/dist/anime.min.js"></script>
+<script src="script.js"></script>
+<script>
+let allPlayers = [];
+let activeGame = 'all';
+
+function renderRoster(players) {
+  const grid = document.getElementById('roster-grid');
+  if (!players.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M2 21v-2a8 8 0 0116 0v2"/></svg><h3>No players found</h3><p>No roster entries for this category yet.</p></div>';
+    return;
+  }
+  grid.innerHTML = players.map(p => `
+    <div class="roster-card" data-game="${p.game || ''}">
+      <div class="roster-card-img">
+        <img src="roster_${p.name.replace(/\s+/g,'')}_pfp.jpg"
+             alt="${p.name}"
+             onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#111,#1a1a1a)';this.remove()">
+      </div>
+      <div class="roster-card-body">
+        <div class="roster-card-name">${p.name}</div>
+        <div class="roster-card-pos">${p.position || 'Player'}</div>
+        <div class="roster-card-game">${gameBadge(p.game)}</div>
+        <div class="roster-card-socials">${socialLinks(p)}</div>
+      </div>
+    </div>`).join('');
+  initCardReveals('.roster-card');
+}
+
+function filterRoster(game) {
+  activeGame = game;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.toggle('active', t.dataset.game === game));
+  const filtered = game === 'all' ? allPlayers : allPlayers.filter(p => p.game === game);
+  renderRoster(filtered);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => filterRoster(tab.dataset.game));
+  });
+
+  const { data, error } = await db.from('roster')
+    .select('*').eq('active', true).order('order_num');
+
+  if (error || !data) {
+    document.getElementById('roster-grid').innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Could not load roster.</p></div>';
+    return;
+  }
+  allPlayers = data;
+  renderRoster(allPlayers);
+});
+</script>
+</body>
+</html>
