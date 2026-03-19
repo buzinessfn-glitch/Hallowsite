@@ -156,22 +156,26 @@ ul { list-style: none; }
 .nav-dropdown > a { display: flex; align-items: center; gap: 5px; }
 .nav-dropdown > a svg { width: 10px; transition: transform 0.2s; }
 .nav-dropdown:hover > a svg { transform: rotate(180deg); }
+/* Dropdown — controlled by JS .dropdown-open class (no CSS gap bug) */
 .dropdown {
-  position: absolute; top: calc(100% + 10px); left: 50%;
-  transform: translateX(-50%);
-  background: rgba(12,12,12,0.97);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  position: absolute; top: calc(100% + 2px); left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  min-width: 180px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s var(--ease);
+  z-index: 999;
+}
+.dropdown-inner {
+  background: rgba(8,8,8,0.98);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
   border: 1px solid var(--border);
   border-radius: var(--r);
-  padding: 8px;
-  min-width: 160px;
-  opacity: 0; pointer-events: none;
-  transform: translateX(-50%) translateY(-6px);
-  transition: opacity 0.2s, transform 0.2s var(--ease);
-  box-shadow: var(--shadow);
+  padding: 6px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.04);
 }
-.nav-dropdown:hover .dropdown {
+/* JS toggles this class on the li.nav-dropdown */
+.nav-dropdown.dropdown-open .dropdown {
   opacity: 1; pointer-events: all;
   transform: translateX(-50%) translateY(0);
 }
@@ -179,6 +183,7 @@ ul { list-style: none; }
   display: block; padding: 9px 14px;
   border-radius: 8px; font-size: 0.78rem;
   letter-spacing: 0.1em; color: var(--text-dim);
+  white-space: nowrap;
 }
 .dropdown li a:hover { color: var(--white); background: var(--surface-2); }
 .dropdown li a::after { display: none; }
@@ -1070,12 +1075,10 @@ footer {
    DIVIDER
 ═══════════════════════════════════════════ */
 .divider { height: 1px; background: var(--border); margin: 0; }
-
-/* ═══════════════════════════════════════════
-   SCROLL REVEAL (JS sets opacity:0 initially)
+   /* SCROLL REVEAL (JS sets opacity:0 initially)
 ═══════════════════════════════════════════ */
 .reveal { opacity: 0; transform: translateY(28px); }
-.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+.reveal.revealed { opacity: 1; transform: translateY(0); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
 
 /* ═══════════════════════════════════════════
    EMPTY STATE
@@ -1425,3 +1428,12 @@ footer {
   80%      { transform: translateX(4px); }
 }
 .shake { animation: shake 0.42s ease; }
+
+/* ── Social SVG icons ── */
+.social-icon {
+  width: 18px; height: 18px;
+  display: inline-block; flex-shrink: 0;
+}
+.social-icon svg { width: 100%; height: 100%; fill: currentColor; display: block; }
+.btn .social-icon { width: 16px; height: 16px; }
+.footer-social-btn .social-icon { width: 16px; height: 16px; }
