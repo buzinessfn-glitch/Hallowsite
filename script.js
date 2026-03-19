@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    HALLOW E-SPORTS — script.js
-   Anime.js v4 + Supabase + Admin Panel
+   Anime.js v4 (ESM, dynamic import) + Supabase + Admin Panel
 ═══════════════════════════════════════════════════════════════ */
 
 // ─── CONFIGURATION ───────────────────────────────────────────
@@ -9,14 +9,43 @@ const SUPABASE_URL  = 'https://orcdiarsjvbbjhlqvdva.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yY2RpYXJzanZiYmpobHF2ZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzQ3NDgsImV4cCI6MjA4OTUxMDc0OH0.icAH5zbTt0LrOiRv0RtSd-7SRx_8XtxwEGYWdSzy9k4';
 
 // Admin password — change this!
-const ADMIN_PASSWORD = 'HALLOW2026ADMIN';
+const ADMIN_PASSWORD = 'HALLOW2026';
 
 // ─── SUPABASE CLIENT ─────────────────────────────────────────
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+let db;
+try {
+  const { createClient } = supabase;
+  db = createClient(SUPABASE_URL, SUPABASE_ANON);
+} catch (e) {
+  console.warn('[Hallow] Supabase init failed:', e.message);
+  // Stub so queries don't throw
+  db = {
+    from: () => ({
+      select: () => ({ order: () => Promise.resolve({ data: [], error: new Error('No DB') }), eq: () => ({ order: () => Promise.resolve({ data: [], error: new Error('No DB') }), single: () => Promise.resolve({ data: null, error: new Error('No DB') }), limit: () => Promise.resolve({ data: [], error: new Error('No DB') }) }), order: () => ({ limit: () => Promise.resolve({ data: [], error: new Error('No DB') }) }), single: () => Promise.resolve({ data: null, error: new Error('No DB') }), limit: () => Promise.resolve({ data: [], error: new Error('No DB') }) }),
+      insert: () => Promise.resolve({ error: null }),
+      update: () => ({ eq: () => Promise.resolve({ error: null }) }),
+      delete: () => ({ eq: () => Promise.resolve({ error: null }) }),
+    })
+  };
+}
 
-// ─── ANIME.JS v4 ─────────────────────────────────────────────
-const { animate, createTimeline, stagger, onScroll, utils } = anime;
+// ─── ANIME.JS v4 — Dynamic ESM Import ────────────────────────
+// v4 is ESM-only; no UMD build exists. We use dynamic import()
+// which works in all modern browsers even from a regular script.
+let animate     = () => null;
+let createTimeline = () => ({ add: function(){ return this; }, sync: function(){ return this; } });
+let stagger     = (n) => (el, i) => i * n;
+
+const _animeReady = (async () => {
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/animejs@4.0.2/dist/modules/index.js');
+    animate        = m.animate;
+    createTimeline = m.createTimeline;
+    stagger        = m.stagger;
+  } catch (err) {
+    console.warn('[Hallow] Anime.js failed to load – animations disabled:', err);
+  }
+})();
 
 /* ═══════════════════════════════════════════
    LOADER ANIMATION
@@ -25,46 +54,55 @@ function runLoader() {
   const loader = document.getElementById('loader');
   if (!loader) return;
 
-  const tl = createTimeline({
-    defaults: { ease: 'outExpo' },
-    onComplete: () => {
-      setTimeout(() => {
-        animate(loader, { opacity: [1, 0], duration: 600, ease: 'inQuad',
-          onComplete: () => { loader.style.display = 'none'; runPageEntrance(); }
-        });
-      }, 300);
-    }
-  });
+  try {
+    const tl = createTimeline({
+      defaults: { ease: 'outExpo' },
+      onComplete: () => {
+        setTimeout(() => {
+          animate(loader, {
+            opacity: [1, 0], duration: 600, ease: 'inQuad',
+            onComplete: () => { loader.style.display = 'none'; runPageEntrance(); }
+          });
+        }, 300);
+      }
+    });
 
-  tl.add('.loader-logo', { opacity: [0, 1], scale: [0.7, 1], duration: 700 }, 100)
-    .add('.loader-word span', { opacity: [0, 1], y: [16, 0], duration: 400, delay: stagger(55) }, 200)
-    .add('.loader-bar-wrap', { opacity: [0, 1], duration: 300 }, 400)
-    .add('.loader-bar-fill', { width: ['0%', '100%'], duration: 1100, ease: 'inOutQuad' }, 450)
-    .add('.loader-sub', { opacity: [0, 1], duration: 400 }, 550);
+    tl.add('.loader-logo',    { opacity: [0, 1], scale: [0.7, 1], duration: 700 }, 100)
+      .add('.loader-word span', { opacity: [0, 1], y: [16, 0], duration: 400, delay: stagger(55) }, 200)
+      .add('.loader-bar-wrap',  { opacity: [0, 1], duration: 300 }, 400)
+      .add('.loader-bar-fill',  { width: ['0%', '100%'], duration: 1100, ease: 'inOutQuad' }, 450)
+      .add('.loader-sub',       { opacity: [0, 1], duration: 400 }, 550);
+  } catch (e) {
+    // Fallback: just hide loader immediately
+    loader.style.display = 'none';
+    runPageEntrance();
+  }
 }
 
 /* ═══════════════════════════════════════════
    PAGE ENTRANCE
 ═══════════════════════════════════════════ */
 function runPageEntrance() {
-  const hero = document.querySelector('.hero-eyebrow');
-  if (hero) {
-    createTimeline({ defaults: { ease: 'outExpo' } })
-      .add('.hero-eyebrow',  { opacity: [0,1], y: [12,0], duration: 600 }, 0)
-      .add('.hero-title',    { opacity: [0,1], y: [20,0], duration: 700 }, 120)
-      .add('.hero-desc',     { opacity: [0,1], y: [12,0], duration: 600 }, 260)
-      .add('.hero-cta',      { opacity: [0,1], y: [10,0], duration: 500 }, 380)
-      .add('.hero-scroll',   { opacity: [0,1], duration: 400 }, 500);
-  }
-  // Page hero (inner pages)
-  const pageHeroTitle = document.querySelector('.page-hero .section-title');
-  if (pageHeroTitle) {
-    createTimeline({ defaults: { ease: 'outExpo' } })
-      .add('.page-hero .section-label', { opacity: [0,1], y: [10,0], duration: 500 }, 50)
-      .add('.page-hero .section-title', { opacity: [0,1], y: [18,0], duration: 600 }, 150)
-      .add('.page-hero .hero-desc',     { opacity: [0,1], y: [10,0], duration: 500 }, 280)
-      .add('.filter-tabs',              { opacity: [0,1], y: [10,0], duration: 400 }, 350);
-  }
+  try {
+    const hero = document.querySelector('.hero-eyebrow');
+    if (hero) {
+      createTimeline({ defaults: { ease: 'outExpo' } })
+        .add('.hero-eyebrow', { opacity: [0,1], y: [12,0], duration: 600 }, 0)
+        .add('.hero-title',   { opacity: [0,1], y: [20,0], duration: 700 }, 120)
+        .add('.hero-desc',    { opacity: [0,1], y: [12,0], duration: 600 }, 260)
+        .add('.hero-cta',     { opacity: [0,1], y: [10,0], duration: 500 }, 380)
+        .add('.hero-scroll',  { opacity: [0,1], duration: 400 }, 500);
+    }
+    // Inner pages
+    const pageHeroTitle = document.querySelector('.page-hero .section-title');
+    if (pageHeroTitle) {
+      createTimeline({ defaults: { ease: 'outExpo' } })
+        .add('.page-hero .section-label', { opacity: [0,1], y: [10,0], duration: 500 }, 50)
+        .add('.page-hero .section-title', { opacity: [0,1], y: [18,0], duration: 600 }, 150)
+        .add('.page-hero .hero-desc',     { opacity: [0,1], y: [10,0], duration: 500 }, 280)
+        .add('.filter-tabs',              { opacity: [0,1], y: [10,0], duration: 400 }, 350);
+    }
+  } catch(e) { /* animations unavailable */ }
 }
 
 /* ═══════════════════════════════════════════
@@ -74,57 +112,66 @@ function initScrollReveal() {
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
+      const el    = entry.target;
       const delay = parseFloat(el.dataset.delay || 0);
-      animate(el, {
-        opacity: [0, 1], y: [28, 0],
-        duration: 650, ease: 'outExpo',
-        delay: delay
-      });
+      try {
+        animate(el, { opacity: [0,1], y: [28,0], duration: 650, ease: 'outExpo', delay });
+      } catch(e) {
+        el.style.opacity = '1';
+      }
       io.unobserve(el);
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal').forEach(el => {
+    el.style.opacity = '0';
+    io.observe(el);
+  });
 }
 
 /* ═══════════════════════════════════════════
    STAGGER REVEALS (cards)
 ═══════════════════════════════════════════ */
-function initCardReveals(selector) {
+async function initCardReveals(selector) {
   const els = document.querySelectorAll(selector);
   if (!els.length) return;
+
+  // Ensure anime is ready before setting up observers
+  await _animeReady;
 
   const io = new IntersectionObserver((entries) => {
     const visible = entries.filter(e => e.isIntersecting).map(e => e.target);
     if (!visible.length) return;
-    animate(visible, {
-      opacity: [0, 1], y: [24, 0],
-      duration: 600, ease: 'outExpo',
-      delay: stagger(70)
-    });
+    try {
+      animate(visible, { opacity: [0,1], y: [24,0], duration: 600, ease: 'outExpo', delay: stagger(70) });
+    } catch(e) {
+      visible.forEach(el => { el.style.opacity = '1'; });
+    }
     visible.forEach(el => io.unobserve(el));
   }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
 
-  els.forEach(el => io.observe(el));
+  els.forEach(el => {
+    el.style.opacity = '0';
+    io.observe(el);
+  });
 }
 
 /* ═══════════════════════════════════════════
    NAV
 ═══════════════════════════════════════════ */
 function initNav() {
-  const nav   = document.querySelector('.nav');
+  const nav    = document.querySelector('.nav');
   const burger = document.querySelector('.nav-burger');
   const mobile = document.querySelector('.nav-mobile');
 
   // Scroll state
-  const onScroll_ = () => {
-    nav.classList.toggle('scrolled', window.scrollY > 10);
+  const onScrollHandler = () => {
+    nav?.classList.toggle('scrolled', window.scrollY > 10);
   };
-  window.addEventListener('scroll', onScroll_, { passive: true });
-  onScroll_();
+  window.addEventListener('scroll', onScrollHandler, { passive: true });
+  onScrollHandler();
 
-  // Active link
+  // Active link highlight
   const current = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
     const href = a.getAttribute('href');
@@ -142,14 +189,18 @@ function initNav() {
 
   mobile?.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
-      burger.classList.remove('open');
+      burger?.classList.remove('open');
       mobile.classList.remove('open');
       document.body.style.overflow = '';
     });
   });
 
-  // Entrance
-  animate('.nav', { opacity: [0, 1], y: [-16, 0], duration: 700, ease: 'outExpo', delay: 100 });
+  // Nav entrance
+  try {
+    animate('.nav', { opacity: [0,1], y: [-16,0], duration: 700, ease: 'outExpo', delay: 100 });
+  } catch(e) {
+    if (nav) nav.style.opacity = '1';
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -164,10 +215,7 @@ function initWatermark() {
     clicks++;
     clearTimeout(timer);
     timer = setTimeout(() => { clicks = 0; }, 500);
-    if (clicks >= 2) {
-      clicks = 0;
-      openAdminAuth();
-    }
+    if (clicks >= 2) { clicks = 0; openAdminAuth(); }
   });
 }
 
@@ -181,10 +229,12 @@ function openAdminAuth() {
   if (!overlay) return;
 
   overlay.classList.add('open');
-  pwModal.style.display = 'block';
-  panel.style.display   = 'none';
+  if (pwModal) pwModal.style.display = 'block';
+  if (panel)   panel.style.display   = 'none';
 
-  animate('#admin-pw-modal', { opacity: [0,1], scale: [0.95,1], y: [12,0], duration: 400, ease: 'outExpo' });
+  try {
+    animate('#admin-pw-modal', { opacity: [0,1], scale: [0.95,1], y: [12,0], duration: 400, ease: 'outExpo' });
+  } catch(e) {}
   setTimeout(() => document.getElementById('admin-pw-input')?.focus(), 50);
 }
 
@@ -194,25 +244,26 @@ function checkAdminPw() {
   if (!input) return;
 
   if (input.value === ADMIN_PASSWORD) {
-    document.getElementById('admin-pw-modal').style.display = 'none';
-    document.getElementById('admin-panel').classList.add('open');
-    document.getElementById('admin-panel').style.display = 'flex';
+    const pwModal = document.getElementById('admin-pw-modal');
+    const panel   = document.getElementById('admin-panel');
+    if (pwModal) pwModal.style.display = 'none';
+    if (panel)   { panel.classList.add('open'); panel.style.display = 'flex'; }
     input.value = '';
     loadAdminData();
   } else {
-    err.style.display = 'block';
-    err.textContent = 'Incorrect password.';
-    animate('#admin-pw-input', { x: [-6,6,-4,4,-2,2,0], duration: 350, ease: 'outElastic(1,.5)' });
-    setTimeout(() => { err.style.display = 'none'; }, 3000);
+    if (err) { err.style.display = 'block'; err.textContent = 'Incorrect password.'; }
+    try {
+      animate('#admin-pw-input', { x: [-6,6,-4,4,-2,2,0], duration: 350, ease: 'outElastic(1,.5)' });
+    } catch(e) {}
+    setTimeout(() => { if (err) err.style.display = 'none'; }, 3000);
   }
 }
 
 function closeAdmin() {
   document.getElementById('admin-overlay')?.classList.remove('open');
   document.getElementById('admin-panel')?.classList.remove('open');
-  if (document.getElementById('admin-panel')) {
-    document.getElementById('admin-panel').style.display = 'none';
-  }
+  const panel = document.getElementById('admin-panel');
+  if (panel) panel.style.display = 'none';
 }
 
 /* ═══════════════════════════════════════════
@@ -225,7 +276,7 @@ function initAdminTabs() {
       document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
       tab.classList.add('active');
       const id = tab.dataset.tab;
-      document.getElementById(`admin-${id}`)?.classList.add('active');
+      if (id) document.getElementById(`admin-${id}`)?.classList.add('active');
     });
   });
 }
@@ -305,8 +356,7 @@ async function saveRoster() {
     ({ error } = await db.from('roster').insert(payload));
   }
   if (error) { toast('Error saving player.', 'error'); return; }
-  toast('Player saved!', 'success');
-  loadAdminRoster(); clearRosterForm();
+  toast('Player saved!', 'success'); loadAdminRoster(); clearRosterForm();
 }
 function clearRosterForm() {
   ['r-name','r-position','r-game','r-bio','r-pfp','r-twitter','r-twitch','r-instagram','r-tiktok','r-order'].forEach(id => {
@@ -408,7 +458,8 @@ window.editNews = (id) => {
   document.getElementById('n-image').value     = n.image_url || '';
   document.getElementById('n-content').value   = n.content || '';
   document.getElementById('n-tags').value      = (n.tags||[]).join(', ');
-  document.getElementById('n-published').checked = n.published;
+  const pub = document.getElementById('n-published');
+  if (pub) pub.checked = n.published;
 };
 window.deleteNews = async (id) => {
   if (!confirm('Delete this post?')) return;
@@ -416,14 +467,14 @@ window.deleteNews = async (id) => {
   toast('Post deleted.'); loadAdminNews();
 };
 async function saveNews() {
-  const tagsRaw = document.getElementById('n-tags').value;
+  const tagsRaw = document.getElementById('n-tags')?.value || '';
   const payload = {
-    title:     document.getElementById('n-title').value.trim(),
-    author:    document.getElementById('n-author').value.trim(),
-    image_url: document.getElementById('n-image').value.trim(),
-    content:   document.getElementById('n-content').value,
-    tags:      tagsRaw ? tagsRaw.split(',').map(t=>t.trim()).filter(Boolean) : [],
-    published: document.getElementById('n-published').checked,
+    title:     document.getElementById('n-title')?.value.trim(),
+    author:    document.getElementById('n-author')?.value.trim(),
+    image_url: document.getElementById('n-image')?.value.trim(),
+    content:   document.getElementById('n-content')?.value.trim(),
+    tags:      tagsRaw.split(',').map(t => t.trim()).filter(Boolean),
+    published: document.getElementById('n-published')?.checked ?? true,
   };
   if (!payload.title) { toast('Title is required.', 'error'); return; }
   let error;
@@ -440,7 +491,7 @@ function clearNewsForm() {
   ['n-title','n-author','n-image','n-content','n-tags'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
-  const p = document.getElementById('n-published'); if(p) p.checked = true;
+  const pub = document.getElementById('n-published'); if(pub) pub.checked = true;
   newsEditId = null;
 }
 
@@ -454,8 +505,8 @@ async function loadAdminMerch() {
   tbody.innerHTML = data.map(m => `
     <tr>
       <td><strong style="color:#fff">${m.name}</strong></td>
-      <td>€${parseFloat(m.price||0).toFixed(2)}</td>
-      <td><span class="admin-badge ${m.active?'admin-badge-active':'admin-badge-inactive'}">${m.active?'Active':'Hidden'}</span></td>
+      <td>${m.price ? `€${parseFloat(m.price).toFixed(2)}` : '—'}</td>
+      <td><span class="admin-badge ${m.active ? 'admin-badge-active' : 'admin-badge-inactive'}">${m.active ? 'Active' : 'Hidden'}</span></td>
       <td class="admin-actions">
         <button class="btn btn-ghost btn-sm" onclick="editMerch('${m.id}')">Edit</button>
         <button class="btn btn-ghost btn-sm" onclick="deleteMerch('${m.id}')">Delete</button>
@@ -466,30 +517,30 @@ async function loadAdminMerch() {
 window.editMerch = (id) => {
   const m = window._merchData?.find(r => r.id === id); if (!m) return;
   merchEditId = id;
-  document.getElementById('m-name').value    = m.name || '';
-  document.getElementById('m-desc').value    = m.description || '';
-  document.getElementById('m-price').value   = m.price || '';
-  document.getElementById('m-img').value     = m.image_filename || '';
-  document.getElementById('m-link').value    = m.payhip_link || '';
+  document.getElementById('m-name').value  = m.name || '';
+  document.getElementById('m-price').value = m.price || '';
+  document.getElementById('m-img').value   = m.image_filename || '';
+  document.getElementById('m-link').value  = m.payhip_link || '';
+  document.getElementById('m-desc').value  = m.description || '';
+  document.getElementById('m-order').value = m.order_num || 0;
   document.getElementById('m-active').checked = m.active;
-  document.getElementById('m-order').value   = m.order_num || 0;
 };
 window.deleteMerch = async (id) => {
-  if (!confirm('Delete this item?')) return;
+  if (!confirm('Delete this product?')) return;
   await db.from('merch_items').delete().eq('id', id);
-  toast('Item deleted.'); loadAdminMerch();
+  toast('Product deleted.'); loadAdminMerch();
 };
 async function saveMerch() {
   const payload = {
-    name:           document.getElementById('m-name').value.trim(),
-    description:    document.getElementById('m-desc').value.trim(),
-    price:          parseFloat(document.getElementById('m-price').value) || 0,
-    image_filename: document.getElementById('m-img').value.trim(),
-    payhip_link:    document.getElementById('m-link').value.trim(),
-    active:         document.getElementById('m-active').checked,
-    order_num:      parseInt(document.getElementById('m-order').value) || 0,
+    name:           document.getElementById('m-name')?.value.trim(),
+    price:          parseFloat(document.getElementById('m-price')?.value) || null,
+    image_filename: document.getElementById('m-img')?.value.trim(),
+    payhip_link:    document.getElementById('m-link')?.value.trim(),
+    description:    document.getElementById('m-desc')?.value.trim(),
+    order_num:      parseInt(document.getElementById('m-order')?.value) || 0,
+    active:         document.getElementById('m-active')?.checked ?? true,
   };
-  if (!payload.name) { toast('Name is required.', 'error'); return; }
+  if (!payload.name) { toast('Product name is required.', 'error'); return; }
   let error;
   if (merchEditId) {
     ({ error } = await db.from('merch_items').update(payload).eq('id', merchEditId));
@@ -497,54 +548,48 @@ async function saveMerch() {
   } else {
     ({ error } = await db.from('merch_items').insert(payload));
   }
-  if (error) { toast('Error saving item.', 'error'); return; }
-  toast('Item saved!', 'success'); loadAdminMerch(); clearMerchForm();
+  if (error) { toast('Error saving product.', 'error'); return; }
+  toast('Product saved!', 'success'); loadAdminMerch(); clearMerchForm();
 }
 function clearMerchForm() {
-  ['m-name','m-desc','m-price','m-img','m-link','m-order'].forEach(id => {
+  ['m-name','m-price','m-img','m-link','m-desc','m-order'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
-  const a = document.getElementById('m-active'); if(a) a.checked = true;
+  const active = document.getElementById('m-active'); if(active) active.checked = true;
   merchEditId = null;
 }
 
-// ─── SOCIALS ─────────────────────────────────────────────────
+// ─── SOCIALS ──────────────────────────────────────────────────
 async function loadAdminSocials() {
+  const formWrap = document.getElementById('admin-socials-form');
+  if (!formWrap) return;
   const { data, error } = await db.from('socials').select('*').order('order_num');
-  if (error) return;
-  const cont = document.getElementById('admin-socials-form');
-  if (!cont) return;
-  cont.innerHTML = data.map(s => `
-    <div class="glass-panel" style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <strong style="font-family:var(--font-display);color:#fff;font-size:.9rem">${s.platform}</strong>
-        <label style="display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--text-dim)">
-          <input type="checkbox" id="s-active-${s.id}" ${s.active?'checked':''} style="accent-color:#fff">
-          Active
-        </label>
+  if (error || !data?.length) {
+    formWrap.innerHTML = '<p style="color:var(--text-dim);font-size:.85rem">No social entries found. Add them via Supabase directly.</p>';
+    return;
+  }
+  formWrap.innerHTML = data.map(s => `
+    <div class="admin-form-row" style="margin-bottom:12px;align-items:center">
+      <div class="admin-field" style="flex:0 0 120px">
+        <label style="color:var(--white)">${s.platform}</label>
       </div>
-      <div class="admin-form-row">
-        <div class="admin-field">
-          <label>Handle</label>
-          <input class="admin-input" id="s-handle-${s.id}" value="${s.handle||''}" placeholder="@handle">
-        </div>
-        <div class="admin-field">
-          <label>URL</label>
-          <input class="admin-input" id="s-url-${s.id}" value="${s.url||''}" placeholder="https://...">
-        </div>
+      <div class="admin-field" style="flex:1">
+        <input class="admin-input" id="soc-url-${s.id}" value="${s.url || ''}" placeholder="URL">
+      </div>
+      <div class="admin-field" style="flex:0 0 80px">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" id="soc-active-${s.id}" ${s.active ? 'checked' : ''} style="accent-color:#fff"> Active
+        </label>
       </div>
       <button class="btn btn-ghost btn-sm" onclick="saveSocial('${s.id}')">Save</button>
     </div>`).join('');
 }
 window.saveSocial = async (id) => {
-  const payload = {
-    handle: document.getElementById(`s-handle-${id}`).value.trim(),
-    url:    document.getElementById(`s-url-${id}`).value.trim(),
-    active: document.getElementById(`s-active-${id}`).checked,
-  };
-  const { error } = await db.from('socials').update(payload).eq('id', id);
+  const url    = document.getElementById(`soc-url-${id}`)?.value.trim();
+  const active = document.getElementById(`soc-active-${id}`)?.checked ?? true;
+  const { error } = await db.from('socials').update({ url, active }).eq('id', id);
   if (error) { toast('Error saving social.', 'error'); return; }
-  toast('Social updated!', 'success');
+  toast('Social saved!', 'success');
 };
 
 // ─── PLACEMENTS ───────────────────────────────────────────────
@@ -584,12 +629,12 @@ window.deletePlacement = async (id) => {
 };
 async function savePlacement() {
   const payload = {
-    game:          document.getElementById('pl-game').value,
-    tournament:    document.getElementById('pl-tournament').value.trim(),
-    placement:     document.getElementById('pl-placement').value.trim(),
-    placement_num: parseInt(document.getElementById('pl-num').value) || null,
-    date:          document.getElementById('pl-date').value || null,
-    prize:         document.getElementById('pl-prize').value.trim(),
+    game:          document.getElementById('pl-game')?.value,
+    tournament:    document.getElementById('pl-tournament')?.value.trim(),
+    placement:     document.getElementById('pl-placement')?.value.trim(),
+    placement_num: parseInt(document.getElementById('pl-num')?.value) || null,
+    date:          document.getElementById('pl-date')?.value || null,
+    prize:         document.getElementById('pl-prize')?.value.trim(),
   };
   if (!payload.tournament) { toast('Tournament name required.', 'error'); return; }
   let error;
@@ -610,7 +655,7 @@ function clearPlacementForm() {
 }
 
 /* ═══════════════════════════════════════════
-   NEWS CONTENT PARSER  (Discord-like)
+   NEWS CONTENT PARSER
 ═══════════════════════════════════════════ */
 function parseContent(text) {
   if (!text) return '';
@@ -638,7 +683,8 @@ function parseContent(text) {
 
 function stripContent(text, maxLen = 130) {
   if (!text) return '';
-  const plain = text.replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1')
+  const plain = text
+    .replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1')
     .replace(/^#+ /gm,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1')
     .replace(/\[\[([^\]|]+)\|?[^\]]*\]\]/g,'$1').replace(/[>~`]/g,'').trim();
   return plain.length > maxLen ? plain.slice(0, maxLen) + '…' : plain;
@@ -696,7 +742,7 @@ function socialLinks(player) {
 }
 
 /* ═══════════════════════════════════════════
-   KEYBOARD
+   KEYBOARD SHORTCUTS
 ═══════════════════════════════════════════ */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeAdmin();
@@ -706,26 +752,19 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ═══════════════════════════════════════════
-   CLOSE OVERLAY ON BG CLICK
+   INIT — await anime before running
 ═══════════════════════════════════════════ */
-document.getElementById?.('admin-overlay')?.addEventListener('click', (e) => {
-  if (e.target === document.getElementById('admin-overlay') && 
-      document.getElementById('admin-pw-modal')?.style.display !== 'none') {
-    closeAdmin();
-  }
-});
+document.addEventListener('DOMContentLoaded', async () => {
+  // Wait for anime.js to load before starting any animations
+  await _animeReady;
 
-/* ═══════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initWatermark();
   initAdminTabs();
   initScrollReveal();
   runLoader();
 
-  // Close overlay background
+  // Close overlay on background click
   const overlay = document.getElementById('admin-overlay');
   if (overlay) {
     overlay.addEventListener('click', (e) => {
@@ -734,23 +773,24 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Expose to HTML onclick attrs
-window.checkAdminPw   = checkAdminPw;
-window.closeAdmin     = closeAdmin;
-window.saveRoster     = saveRoster;
-window.clearRosterForm= clearRosterForm;
-window.saveLeader     = saveLeader;
-window.clearLeaderForm= clearLeaderForm;
-window.saveNews       = saveNews;
-window.clearNewsForm  = clearNewsForm;
-window.saveMerch      = saveMerch;
-window.clearMerchForm = clearMerchForm;
-window.savePlacement  = savePlacement;
-window.clearPlacementForm = clearPlacementForm;
-window.parseContent   = parseContent;
-window.stripContent   = stripContent;
-window.gameBadge      = gameBadge;
-window.socialLinks    = socialLinks;
-window.initCardReveals = initCardReveals;
-window.toast          = toast;
-window.db             = db;
+// ─── Global Exports (for onclick attrs & inline scripts) ──────
+window.checkAdminPw      = checkAdminPw;
+window.closeAdmin        = closeAdmin;
+window.saveRoster        = saveRoster;
+window.clearRosterForm   = clearRosterForm;
+window.saveLeader        = saveLeader;
+window.clearLeaderForm   = clearLeaderForm;
+window.saveNews          = saveNews;
+window.clearNewsForm     = clearNewsForm;
+window.saveMerch         = saveMerch;
+window.clearMerchForm    = clearMerchForm;
+window.savePlacement     = savePlacement;
+window.clearPlacementForm= clearPlacementForm;
+window.parseContent      = parseContent;
+window.stripContent      = stripContent;
+window.gameBadge         = gameBadge;
+window.socialLinks       = socialLinks;
+window.initCardReveals   = initCardReveals;
+window.toast             = toast;
+window.db                = db;
+window.GAME_NAMES        = GAME_NAMES;

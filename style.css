@@ -12,6 +12,7 @@
   --border:        rgba(255,255,255,0.08);
   --border-bright: rgba(255,255,255,0.22);
   --text:          #ccc;
+  --text-muted:    rgba(200,200,200,0.65);
   --text-dim:      rgba(200,200,200,0.42);
   --white:         #ffffff;
   --shadow:        0 8px 48px rgba(0,0,0,0.7);
