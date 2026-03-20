@@ -5,8 +5,8 @@
 
 // ─── CONFIGURATION ─────────────────────────────────────────── 
 // Fill in your Supabase credentials here (or in your deployment env):
-const SUPABASE_URL  = 'YOUR_SUPABASE_URL_HERE';
-const SUPABASE_ANON = 'YOUR_SUPABASE_ANON_KEY_HERE';
+const SUPABASE_URL  = 'https://orcdiarsjvbbjhlqvdva.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yY2RpYXJzanZiYmpobHF2ZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzQ3NDgsImV4cCI6MjA4OTUxMDc0OH0.icAH5zbTt0LrOiRv0RtSd-7SRx_8XtxwEGYWdSzy9k4';
 const ADMIN_PASSWORD = 'HALLOW2026';
 
 // ─── SUPABASE CLIENT ─────────────────────────────────────────
