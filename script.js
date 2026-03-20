@@ -37,8 +37,62 @@ try {
 }
 
 /* ═══════════════════════════════════════════
-   LOADER
+   SUPABASE STORAGE — FILE UPLOADS
+   Bucket name: "uploads" (create this in Supabase Dashboard → Storage)
+   Set bucket to PUBLIC so URLs work without auth.
 ═══════════════════════════════════════════ */
+const STORAGE_BUCKET = 'uploads';
+
+async function uploadFile(file, folder = 'general') {
+  if (!db.storage) {
+    toast('File upload requires Supabase Storage to be configured.', 'error');
+    return null;
+  }
+  const ext  = file.name.split('.').pop().toLowerCase();
+  const safe = file.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9.\-_]/g, '');
+  const path = `${folder}/${Date.now()}_${safe}`;
+
+  const { data, error } = await db.storage.from(STORAGE_BUCKET).upload(path, file, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: file.type,
+  });
+  if (error) { toast('Upload failed: ' + error.message, 'error'); return null; }
+
+  const { data: urlData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  return urlData?.publicUrl || null;
+}
+
+// Attach file-upload button behaviour to an input pair
+// uploadBtnId: the <button> that triggers file pick
+// inputId:     the text <input> to fill with the URL
+// folder:      storage sub-folder
+function initUploadBtn(uploadBtnId, inputId, folder = 'general') {
+  const btn = document.getElementById(uploadBtnId);
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const picker = document.createElement('input');
+    picker.type   = 'file';
+    picker.accept = 'image/*';
+    picker.onchange = async () => {
+      const file = picker.files[0];
+      if (!file) return;
+      btn.textContent = 'Uploading…';
+      btn.disabled    = true;
+      const url = await uploadFile(file, folder);
+      btn.textContent = 'Upload ↑';
+      btn.disabled    = false;
+      if (url) {
+        const inp = document.getElementById(inputId);
+        if (inp) { inp.value = url; inp.dispatchEvent(new Event('input')); }
+        toast('File uploaded!', 'success');
+      }
+    };
+    picker.click();
+  });
+}
+
+
 function hideLoader() {
   const loader = document.getElementById('loader');
   if (!loader) { runPageEntrance(); return; }
@@ -215,7 +269,14 @@ function checkAdminPw() {
     if (panel)   { panel.classList.add('open'); panel.style.display = 'flex'; }
     input.value = '';
     // Small delay so panel is visible before we start loading
-    setTimeout(loadAdminData, 50);
+    setTimeout(() => {
+      loadAdminData();
+      // Wire upload buttons (safe to call multiple times — initUploadBtn guards with getElementById)
+      initUploadBtn('r-pfp-upload',   'r-pfp',   'roster');
+      initUploadBtn('l-pfp-upload',   'l-pfp',   'leaders');
+      initUploadBtn('n-image-upload', 'n-image', 'news');
+      initUploadBtn('m-img-upload',   'm-img',   'merch');
+    }, 50);
   } else {
     if (err) { err.style.display = 'block'; err.textContent = 'Incorrect password.'; }
     input.classList.add('shake');
