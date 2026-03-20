@@ -165,8 +165,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   grid.innerHTML = data.map(l => `
     <div class="leader-card">
       <div class="leader-pfp">
-        <img src="leader_${l.name.replace(/\s+/g,'')}_pfp.jpg" alt="${l.name}"
-             onerror="this.src='';this.parentElement.style.background='#1a1a1a';this.remove()">
+        <img src="${l.pfp_filename && l.pfp_filename.startsWith('http') ? l.pfp_filename : l.pfp_filename ? l.pfp_filename : 'hallow_logo.jpg'}"
+             alt="${l.name}"
+             onerror="this.onerror=null;this.src='hallow_logo.jpg'">
       </div>
       <div class="leader-info">
         <div class="leader-name">${l.name}</div>
