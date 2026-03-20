@@ -224,9 +224,9 @@ function renderRoster(players) {
   grid.innerHTML = players.map(p => `
     <div class="roster-card" data-game="${p.game || ''}">
       <div class="roster-card-img">
-        <img src="roster_${p.name.replace(/\s+/g,'')}_pfp.jpg"
+        <img src="${p.pfp_filename && p.pfp_filename.startsWith('http') ? p.pfp_filename : p.pfp_filename ? p.pfp_filename : 'hallow_logo.jpg'}"
              alt="${p.name}"
-             onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#111,#1a1a1a)';this.remove()">
+             onerror="this.onerror=null;this.src='hallow_logo.jpg'">
       </div>
       <div class="roster-card-body">
         <div class="roster-card-name">${p.name}</div>
