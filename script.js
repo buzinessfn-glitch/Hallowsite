@@ -3,11 +3,12 @@
    Pure CSS transitions + Vanilla JS (no external dependencies)
 ═══════════════════════════════════════════════════════════════ */
 
-// ─── CONFIGURATION ─────────────────────────────────────────── 
-// Fill in your Supabase credentials here (or in your deployment env):
+// ─── CONFIGURATION ───────────────────────────────────────────
 const SUPABASE_URL  = 'https://orcdiarsjvbbjhlqvdva.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yY2RpYXJzanZiYmpobHF2ZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzQ3NDgsImV4cCI6MjA4OTUxMDc0OH0.icAH5zbTt0LrOiRv0RtSd-7SRx_8XtxwEGYWdSzy9k4';
 const ADMIN_PASSWORD = 'HALLOW2026';
+// Name of your Supabase Storage bucket (must be public):
+const STORAGE_BUCKET = 'hallow';
 
 // ─── SUPABASE CLIENT ─────────────────────────────────────────
 let db;
@@ -17,12 +18,11 @@ try {
   db = createClient(SUPABASE_URL, SUPABASE_ANON);
 } catch (e) {
   console.warn('[Hallow] Supabase credentials not set — using stub.');
-  // Fully awaitable stub so nothing crashes
   const makeQuery = () => {
     const pending = Promise.resolve({ data: [], error: { message: 'No DB configured' } });
     const q = {
-      select:  () => q,  eq:    () => q, order: () => q,
-      limit:   () => q,  not:   () => q, in:    () => q,
+      select:  () => q, eq: () => q, order: () => q,
+      limit:   () => q, not: () => q, in: () => q,
       single:  () => Promise.resolve({ data: null, error: { message: 'No DB' } }),
       insert:  () => Promise.resolve({ data: null, error: null }),
       update:  () => q,
@@ -33,66 +33,90 @@ try {
     };
     return q;
   };
-  db = { from: () => makeQuery() };
+  const storageMock = {
+    from: () => ({
+      upload:        () => Promise.resolve({ data: null, error: { message: 'No storage' } }),
+      getPublicUrl:  () => ({ data: { publicUrl: '' } }),
+      remove:        () => Promise.resolve({ error: null }),
+    })
+  };
+  db = { from: () => makeQuery(), storage: storageMock };
 }
 
 /* ═══════════════════════════════════════════
-   SUPABASE STORAGE — FILE UPLOADS
-   Bucket name: "uploads" (create this in Supabase Dashboard → Storage)
-   Set bucket to PUBLIC so URLs work without auth.
+   FILE UPLOAD — Supabase Storage
+   Requires a public bucket named STORAGE_BUCKET
 ═══════════════════════════════════════════ */
-const STORAGE_BUCKET = 'uploads';
+async function uploadFile(file, folder = 'uploads') {
+  if (!file) return null;
+  try {
+    const ext     = file.name.split('.').pop().toLowerCase();
+    const safeExt = ['jpg','jpeg','png','gif','webp','avif'].includes(ext) ? ext : 'jpg';
+    const name    = `${folder}/${Date.now()}_${Math.random().toString(36).substr(2,6)}.${safeExt}`;
 
-async function uploadFile(file, folder = 'general') {
-  if (!db.storage) {
-    toast('File upload requires Supabase Storage to be configured.', 'error');
+    const { error } = await db.storage
+      .from(STORAGE_BUCKET)
+      .upload(name, file, { cacheControl: '3600', upsert: false });
+
+    if (error) { toast('Upload failed: ' + error.message, 'error'); return null; }
+
+    const { data } = db.storage.from(STORAGE_BUCKET).getPublicUrl(name);
+    return data.publicUrl;
+  } catch (err) {
+    console.error('[Hallow] Upload error:', err);
+    toast('Upload error: ' + err.message, 'error');
     return null;
   }
-  const ext  = file.name.split('.').pop().toLowerCase();
-  const safe = file.name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9.\-_]/g, '');
-  const path = `${folder}/${Date.now()}_${safe}`;
-
-  const { data, error } = await db.storage.from(STORAGE_BUCKET).upload(path, file, {
-    cacheControl: '3600',
-    upsert: true,
-    contentType: file.type,
-  });
-  if (error) { toast('Upload failed: ' + error.message, 'error'); return null; }
-
-  const { data: urlData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(path);
-  return urlData?.publicUrl || null;
 }
 
-// Attach file-upload button behaviour to an input pair
-// uploadBtnId: the <button> that triggers file pick
-// inputId:     the text <input> to fill with the URL
-// folder:      storage sub-folder
-function initUploadBtn(uploadBtnId, inputId, folder = 'general') {
-  const btn = document.getElementById(uploadBtnId);
-  if (!btn) return;
-  btn.addEventListener('click', () => {
+/* ─── Dynamically inject upload buttons next to image fields in admin ─── */
+function enhanceAdminForms() {
+  const imageFields = {
+    'r-pfp':   'roster',
+    'l-pfp':   'leaders',
+    'n-image': 'news',
+    'm-img':   'merch',
+  };
+
+  Object.entries(imageFields).forEach(([inputId, folder]) => {
+    const input = document.getElementById(inputId);
+    if (!input || input.dataset.uploadReady) return;
+    input.dataset.uploadReady = '1';
+
+    // Hidden file picker
     const picker = document.createElement('input');
     picker.type   = 'file';
     picker.accept = 'image/*';
-    picker.onchange = async () => {
+    picker.style.display = 'none';
+    input.parentElement.appendChild(picker);
+
+    // Upload button
+    const btn = document.createElement('button');
+    btn.type      = 'button';
+    btn.className = 'btn btn-ghost btn-sm';
+    btn.style.cssText = 'margin-top:6px;width:100%;justify-content:center;font-size:.7rem';
+    btn.textContent = '↑ Upload Image';
+    input.parentElement.appendChild(btn);
+
+    btn.addEventListener('click', () => picker.click());
+
+    picker.addEventListener('change', async () => {
       const file = picker.files[0];
       if (!file) return;
       btn.textContent = 'Uploading…';
-      btn.disabled    = true;
+      btn.disabled = true;
       const url = await uploadFile(file, folder);
-      btn.textContent = 'Upload ↑';
-      btn.disabled    = false;
-      if (url) {
-        const inp = document.getElementById(inputId);
-        if (inp) { inp.value = url; inp.dispatchEvent(new Event('input')); }
-        toast('File uploaded!', 'success');
-      }
-    };
-    picker.click();
+      if (url) { input.value = url; toast('Image uploaded ✓', 'success'); }
+      btn.textContent = '↑ Upload Image';
+      btn.disabled = false;
+      picker.value = '';
+    });
   });
 }
 
-
+/* ═══════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════ */
 function hideLoader() {
   const loader = document.getElementById('loader');
   if (!loader) { runPageEntrance(); return; }
@@ -176,21 +200,31 @@ function initNav() {
     if (href === current || (current === '' && href === 'index.html')) a.classList.add('active');
   });
 
-  // ── JS DROPDOWN: hover + click, with leave-delay so gap doesn't close it ──
+  // JS DROPDOWN — 120ms close-delay bridges the gap between button and menu
   document.querySelectorAll('.nav-dropdown').forEach(item => {
     const dropdown = item.querySelector('.dropdown');
     if (!dropdown) return;
     let closeTimer = null;
 
-    const open  = () => { clearTimeout(closeTimer); item.classList.add('dropdown-open'); };
-    const close = () => { closeTimer = setTimeout(() => item.classList.remove('dropdown-open'), 120); };
+    const open  = () => {
+      clearTimeout(closeTimer);
+      item.classList.add('dropdown-open');
+      const svg = item.querySelector('a > svg');
+      if (svg) svg.style.transform = 'rotate(180deg)';
+    };
+    const close = () => {
+      closeTimer = setTimeout(() => {
+        item.classList.remove('dropdown-open');
+        const svg = item.querySelector('a > svg');
+        if (svg) svg.style.transform = '';
+      }, 120);
+    };
 
     item.addEventListener('mouseenter', open);
     item.addEventListener('mouseleave', close);
     dropdown.addEventListener('mouseenter', open);
     dropdown.addEventListener('mouseleave', close);
 
-    // Also support click/touch toggle
     item.querySelector('a')?.addEventListener('click', (e) => {
       if (window.innerWidth > 900) {
         e.preventDefault();
@@ -199,10 +233,14 @@ function initNav() {
     });
   });
 
-  // Close dropdown on outside click
+  // Close on outside click
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.nav-dropdown')) {
-      document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('dropdown-open'));
+      document.querySelectorAll('.nav-dropdown').forEach(d => {
+        d.classList.remove('dropdown-open');
+        const svg = d.querySelector('a > svg');
+        if (svg) svg.style.transform = '';
+      });
     }
   });
 
@@ -251,7 +289,7 @@ function openAdminAuth() {
   const panel   = document.getElementById('admin-panel');
   if (!overlay) return;
   overlay.classList.add('open');
-  if (pwModal) { pwModal.style.display = 'block'; }
+  if (pwModal) pwModal.style.display = 'block';
   if (panel)   { panel.style.display = 'none'; panel.classList.remove('open'); }
   setTimeout(() => document.getElementById('admin-pw-input')?.focus(), 80);
 }
@@ -261,22 +299,13 @@ function checkAdminPw() {
   const err   = document.getElementById('admin-pw-error');
   if (!input) return;
   if (input.value === ADMIN_PASSWORD) {
-    const overlay = document.getElementById('admin-overlay');
-    const pwModal = document.getElementById('admin-pw-modal');
-    const panel   = document.getElementById('admin-panel');
-    if (overlay) overlay.classList.remove('open');
-    if (pwModal) pwModal.style.display = 'none';
-    if (panel)   { panel.classList.add('open'); panel.style.display = 'flex'; }
+    document.getElementById('admin-overlay')?.classList.remove('open');
+    if (document.getElementById('admin-pw-modal'))
+      document.getElementById('admin-pw-modal').style.display = 'none';
+    const panel = document.getElementById('admin-panel');
+    if (panel) { panel.classList.add('open'); panel.style.display = 'flex'; }
     input.value = '';
-    // Small delay so panel is visible before we start loading
-    setTimeout(() => {
-      loadAdminData();
-      // Wire upload buttons (safe to call multiple times — initUploadBtn guards with getElementById)
-      initUploadBtn('r-pfp-upload',   'r-pfp',   'roster');
-      initUploadBtn('l-pfp-upload',   'l-pfp',   'leaders');
-      initUploadBtn('n-image-upload', 'n-image', 'news');
-      initUploadBtn('m-img-upload',   'm-img',   'merch');
-    }, 50);
+    setTimeout(() => { loadAdminData(); }, 50);
   } else {
     if (err) { err.style.display = 'block'; err.textContent = 'Incorrect password.'; }
     input.classList.add('shake');
@@ -306,38 +335,33 @@ function initAdminTabs() {
   });
 }
 
-/* ═══════════════════════════════════════════
-   ADMIN — shared helpers
-═══════════════════════════════════════════ */
-// Sets tbody content — shows empty/error state properly
+/* ─── Admin table helpers ─── */
 function adminTableBody(tbodyId, html) {
   const el = document.getElementById(tbodyId);
   if (!el) return;
-  el.innerHTML = html || `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--text-dim);font-size:.8rem">No entries yet.</td></tr>`;
+  el.innerHTML = html ||
+    `<tr><td colspan="10" style="text-align:center;padding:24px;color:var(--text-dim);font-size:.8rem">No entries yet.</td></tr>`;
 }
-
 function adminTableError(tbodyId, msg) {
   const el = document.getElementById(tbodyId);
   if (!el) return;
-  el.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:24px;color:#f87171;font-size:.8rem">⚠ ${msg || 'Could not load data. Check Supabase credentials.'}</td></tr>`;
+  el.innerHTML =
+    `<tr><td colspan="10" style="text-align:center;padding:24px;color:#f87171;font-size:.8rem">⚠ ${msg || 'Could not load. Check Supabase credentials.'}</td></tr>`;
 }
 
 /* ═══════════════════════════════════════════
    ADMIN DATA LOADERS
 ═══════════════════════════════════════════ */
 async function loadAdminData() {
-  // Run all loaders in parallel — each handles its own error
   await Promise.allSettled([
-    loadAdminRoster(),
-    loadAdminLeaders(),
-    loadAdminNews(),
-    loadAdminMerch(),
-    loadAdminSocials(),
-    loadAdminPlacements(),
+    loadAdminRoster(), loadAdminLeaders(), loadAdminNews(),
+    loadAdminMerch(),  loadAdminSocials(), loadAdminPlacements(),
   ]);
+  // Inject upload buttons into image fields
+  setTimeout(enhanceAdminForms, 80);
 }
 
-// ── ROSTER ────────────────────────────────────────────────────
+// ── ROSTER ──────────────────────────────────────────────────
 let rosterEditId = null;
 async function loadAdminRoster() {
   const { data, error } = await db.from('roster').select('*').order('order_num');
@@ -346,8 +370,7 @@ async function loadAdminRoster() {
     (data && data.length) ? data.map(p => `
       <tr>
         <td><strong style="color:#fff">${p.name}</strong></td>
-        <td>${p.position || '—'}</td>
-        <td>${p.game || '—'}</td>
+        <td>${p.position || '—'}</td><td>${p.game || '—'}</td>
         <td><span class="admin-badge ${p.active ? 'admin-badge-active' : 'admin-badge-inactive'}">${p.active ? 'Active' : 'Inactive'}</span></td>
         <td class="admin-actions">
           <button class="btn btn-ghost btn-sm" onclick="editRoster('${p.id}')">Edit</button>
@@ -410,7 +433,7 @@ function clearRosterForm() {
   rosterEditId = null;
 }
 
-// ── LEADERS ───────────────────────────────────────────────────
+// ── LEADERS ─────────────────────────────────────────────────
 let leaderEditId = null;
 async function loadAdminLeaders() {
   const { data, error } = await db.from('leaders').select('*').order('order_num');
@@ -418,8 +441,7 @@ async function loadAdminLeaders() {
   adminTableBody('admin-leaders-list',
     (data && data.length) ? data.map(l => `
       <tr>
-        <td><strong style="color:#fff">${l.name}</strong></td>
-        <td>${l.role || '—'}</td>
+        <td><strong style="color:#fff">${l.name}</strong></td><td>${l.role || '—'}</td>
         <td class="admin-actions">
           <button class="btn btn-ghost btn-sm" onclick="editLeader('${l.id}')">Edit</button>
           <button class="btn btn-ghost btn-sm" onclick="deleteLeader('${l.id}')">Delete</button>
@@ -474,7 +496,7 @@ function clearLeaderForm() {
   leaderEditId = null;
 }
 
-// ── NEWS ──────────────────────────────────────────────────────
+// ── NEWS ────────────────────────────────────────────────────
 let newsEditId = null;
 async function loadAdminNews() {
   const { data, error } = await db.from('news_posts').select('*').order('created_at', { ascending: false });
@@ -537,7 +559,7 @@ function clearNewsForm() {
   newsEditId = null;
 }
 
-// ── MERCH ─────────────────────────────────────────────────────
+// ── MERCH ───────────────────────────────────────────────────
 let merchEditId = null;
 async function loadAdminMerch() {
   const { data, error } = await db.from('merch_items').select('*').order('order_num');
@@ -601,7 +623,7 @@ function clearMerchForm() {
   merchEditId = null;
 }
 
-// ── SOCIALS ───────────────────────────────────────────────────
+// ── SOCIALS ─────────────────────────────────────────────────
 async function loadAdminSocials() {
   const formWrap = document.getElementById('admin-socials-form');
   if (!formWrap) return;
@@ -632,7 +654,7 @@ window.saveSocial = async (id) => {
   toast('Social updated!', 'success');
 };
 
-// ── PLACEMENTS ────────────────────────────────────────────────
+// ── PLACEMENTS ──────────────────────────────────────────────
 let placementEditId = null;
 async function loadAdminPlacements() {
   const { data, error } = await db.from('placements').select('*').order('date', { ascending: false });
@@ -641,8 +663,7 @@ async function loadAdminPlacements() {
     (data && data.length) ? data.map(p => `
       <tr>
         <td><strong style="color:#fff">${p.tournament}</strong></td>
-        <td>${p.game || '—'}</td>
-        <td>${p.placement || '—'}</td>
+        <td>${p.game || '—'}</td><td>${p.placement || '—'}</td>
         <td>${p.date ? new Date(p.date).toLocaleDateString() : '—'}</td>
         <td class="admin-actions">
           <button class="btn btn-ghost btn-sm" onclick="editPlacement('${p.id}')">Edit</button>
@@ -750,7 +771,10 @@ const GAME_LOGOS = { valorant:'valorantlogo.jpg', fortnite:'fortnitelogo.jpg', r
 const GAME_NAMES = { valorant:'Valorant', fortnite:'Fortnite', rs6:'Rainbow Six Siege', cs2:'CS2' };
 function gameBadge(game) {
   if (!game) return '';
-  return `<span class="game-badge">${GAME_LOGOS[game] ? `<img src="${GAME_LOGOS[game]}" alt="${GAME_NAMES[game]}" onerror="this.style.display='none'">` : ''}${GAME_NAMES[game] || game}</span>`;
+  return `<span class="game-badge">
+    ${GAME_LOGOS[game] ? `<img src="${GAME_LOGOS[game]}" alt="${GAME_NAMES[game]}" onerror="this.onerror=null;this.src='hallow_logo.jpg'">` : ''}
+    ${GAME_NAMES[game] || game}
+  </span>`;
 }
 function socialLinks(player) {
   return [
@@ -769,7 +793,8 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeAdmin();
   if (e.key === 'Enter') {
     const modal = document.getElementById('admin-pw-modal');
-    if (modal && modal.style.display !== 'none' && document.getElementById('admin-overlay')?.classList.contains('open')) {
+    if (modal && modal.style.display !== 'none' &&
+        document.getElementById('admin-overlay')?.classList.contains('open')) {
       checkAdminPw();
     }
   }
@@ -788,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (overlay) overlay.addEventListener('click', (e) => { if (e.target === overlay) closeAdmin(); });
 });
 
-// ── Global exports ────────────────────────────────────────────
+// ── Global exports ─────────────────────────────────────────
 window.checkAdminPw       = checkAdminPw;
 window.closeAdmin         = closeAdmin;
 window.saveRoster         = saveRoster;
@@ -806,6 +831,7 @@ window.stripContent       = stripContent;
 window.gameBadge          = gameBadge;
 window.socialLinks        = socialLinks;
 window.initCardReveals    = initCardReveals;
+window.uploadFile         = uploadFile;
 window.toast              = toast;
 window.db                 = db;
 window.GAME_NAMES         = GAME_NAMES;
