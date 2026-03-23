@@ -6,7 +6,7 @@
 // ─── CONFIGURATION ───────────────────────────────────────────
 const SUPABASE_URL  = 'https://orcdiarsjvbbjhlqvdva.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9yY2RpYXJzanZiYmpobHF2ZHZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzQ3NDgsImV4cCI6MjA4OTUxMDc0OH0.icAH5zbTt0LrOiRv0RtSd-7SRx_8XtxwEGYWdSzy9k4';
-const ADMIN_PASSWORD = 'HALLOW2026';
+const ADMIN_PASSWORD = 'G7#kL9pQ!xV2m@zT6wY8';
 // Name of your Supabase Storage bucket (must be public):
 const STORAGE_BUCKET = 'hallow';
 
